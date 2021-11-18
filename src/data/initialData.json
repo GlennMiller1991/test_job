@@ -1,8 +1,4 @@
-import React from 'react';
-import './App.css';
-import data from './data/initialData.json'
-
-/*const initialData: entryType[] = [
+[
   {
     "id": 1780,
     "oguid": "6180f3cef0d1e845bd488e06",
@@ -2403,16 +2399,4 @@ import data from './data/initialData.json'
     },
     "created_date": 1410967206896
   }
-]*/
-
-function App() {
-  const entry = data[0]
-  return (
-    <div className="App">
-      {entry.terminal.name}
-    </div>
-  );
-}
-
-export default App;
-
+]
