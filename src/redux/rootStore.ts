@@ -1,9 +1,13 @@
-import {applyMiddleware, combineReducers, createStore } from "redux";
+import {applyMiddleware, combineReducers, createStore} from "redux";
 import thunk from "redux-thunk";
-import {entriesReducer, testActionType} from "./entriesReducer";
+import {changeCurrentPageActionType, entriesReducer, getEntriesActionType, testActionType} from "./entriesReducer";
 
 //types
-export type actionsType = testActionType
+export type actionsType =
+    testActionType
+    | getEntriesActionType
+    | changeCurrentPageActionType
+
 export type stateType = ReturnType<typeof store.getState>
 export type dispatchType = typeof store.dispatch
 

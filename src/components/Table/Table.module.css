@@ -1,5 +1,5 @@
 .wrapper {
-    display: grid;
+    display: block;
     width: 90%;
     margin: 0 auto;
 }
@@ -7,6 +7,10 @@
 .hat {
     color: #3d3939;
     font-family: "Droid Sans", "Comic Sans MS", sans-serif;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    width: 100%;
+    border-bottom: 1px solid black;
 }
 
 .row {
@@ -14,9 +18,20 @@
     grid-template-columns: repeat(4, 1fr);
     width: 100%;
     border-bottom: 1px solid black;
+    justify-content: center;
+    align-items: center;
 }
 
 .row * {
-    display: flex;
-    justify-content: center;
+    text-align: center;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.hat * {
+    text-align: center;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
