@@ -1,0 +1,22 @@
+.wrapper {
+    display: grid;
+    width: 90%;
+    margin: 0 auto;
+}
+
+.hat {
+    color: #3d3939;
+    font-family: "Droid Sans", "Comic Sans MS", sans-serif;
+}
+
+.row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    width: 100%;
+    border-bottom: 1px solid black;
+}
+
+.row * {
+    display: flex;
+    justify-content: center;
+}

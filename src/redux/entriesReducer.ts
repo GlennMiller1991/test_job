@@ -29,7 +29,11 @@ export type entryType = {
     },
     created_date: number,
 }
-export type entriesPageType = entryType[]
+export type entriesPageType = {
+    entries: entryType[],
+    totalCount: number,
+    pageSize: number,
+}
 
 //action types
 export type testActionType = ReturnType<typeof test>
@@ -43,8 +47,12 @@ export const test = () => {
     } as const
 }
 
-//data
-const initialData: entriesPageType = data
+
+const initialData: entriesPageType = {
+    entries: data,
+    totalCount: data.length,
+    pageSize: 3,
+}
 
 export const entriesReducer = (state: entriesPageType = initialData, action: actionsType) => {
     switch (action.type) {
