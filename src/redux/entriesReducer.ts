@@ -6,8 +6,10 @@ const TEST = 'TEST'
 const GET_ENTRIES = 'GET-ENTRIES'
 const CHANGE_CURRENT_PAGE = 'CHANGE-CURRENT-PAGE'
 const CHANGE_PAGE_SIZE = 'CHANGE-PAGE-SIZE'
+const CHANGE_FILTER = 'CHANGE-FILTER'
 
 //types
+export type filterType = 'all' | 'new' | 'completed' | 'assigned_to' | 'started' | 'declined'
 export type entryType = {
     id: number,
     oguid: string,
@@ -37,6 +39,7 @@ export type entriesPageType = {
     totalCount: number,
     pageSize: number,
     currentPage: number,
+    filter: string //filterType,
 }
 
 //action types
@@ -44,6 +47,7 @@ export type testActionType = ReturnType<typeof test>
 export type getEntriesActionType = ReturnType<typeof getEntries>
 export type changeCurrentPageActionType = ReturnType<typeof changeCurrentPage>
 export type changePageSizeActionType = ReturnType<typeof changePageSize>
+export type changeFilterActionType = ReturnType<typeof changeFilterValue>
 
 //action and thunk creators
 export const test = () => {
@@ -52,11 +56,12 @@ export const test = () => {
         payload: {}
     } as const
 }
-export const getEntries = (entries: entryType[]) => {
+export const getEntries = (entries: entryType[], totalCount: number) => {
     return {
         type: GET_ENTRIES,
         payload: {
             entries,
+            totalCount,
         }
     } as const
 }
@@ -76,11 +81,21 @@ export const changePageSize = (pageSize: number) => {
         }
     } as const
 }
+export const changeFilterValue = (filter: string /*filterType*/) => {
+    return {
+        type: CHANGE_FILTER,
+        payload: {
+            filter
+        }
+    } as const
+}
+
 const initialData: entriesPageType = {
     entries: [],
     totalCount: data.length,
     pageSize: 3,
     currentPage: 1,
+    filter: 'all',
 }
 
 export const entriesReducer = (state: entriesPageType = initialData, action: actionsType) => {
@@ -91,6 +106,7 @@ export const entriesReducer = (state: entriesPageType = initialData, action: act
                 ...state,
                 ...action.payload,
             }
+        case CHANGE_FILTER:
         case CHANGE_PAGE_SIZE:
             return {
                 ...state,

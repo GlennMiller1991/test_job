@@ -1,7 +1,7 @@
 import {applyMiddleware, combineReducers, createStore} from "redux";
 import thunk from "redux-thunk";
 import {
-    changeCurrentPageActionType,
+    changeCurrentPageActionType, changeFilterActionType,
     changePageSizeActionType,
     entriesReducer,
     getEntriesActionType,
@@ -16,6 +16,7 @@ export type actionsType =
     | changeCurrentPageActionType
     | changePageSizeActionType
     | setEntryActionType
+    | changeFilterActionType
 
 export type stateType = ReturnType<typeof store.getState>
 export type dispatchType = typeof store.dispatch
