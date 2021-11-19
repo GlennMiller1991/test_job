@@ -11,7 +11,6 @@ type PathParamsType = {
 }
 
 const EntrySecret: React.FC<RouteComponentProps<PathParamsType>> = React.memo((props) => {
-    console.log('from entry')
     //initial data
     const state = useSelector<stateType, entryPageStateType>(state => state.entryPage)
     const dispatch = useDispatch()

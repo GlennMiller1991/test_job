@@ -1,12 +1,10 @@
 import React, {ChangeEvent} from "react";
-import styles from "../Table.module.css";
 
 type OptionsPropsType = {
     changePageSizeCallback: (e: ChangeEvent<HTMLSelectElement>) => void
 }
 
 export const Options: React.FC<OptionsPropsType> = React.memo((props) => {
-    console.log('from options')
     return (
             <div>
                 Показывать по

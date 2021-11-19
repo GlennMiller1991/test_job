@@ -5,6 +5,10 @@
     cursor: pointer;
 }
 
+.changePage:active, .lastPage:active {
+    color: #c98b8b;
+}
+
 .lastPage {
     font-weight: unset;
     cursor: pointer;

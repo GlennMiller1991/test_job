@@ -2,7 +2,6 @@ import React from "react";
 import styles from "../Table.module.css";
 
 export const TableHat: React.FC = React.memo(() => {
-    console.log('from table hat')
     return (
         <div className={`${styles.hat}`}>
             <div>Номер/дата</div>

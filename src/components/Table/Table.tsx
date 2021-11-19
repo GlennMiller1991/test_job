@@ -5,14 +5,11 @@ import {useDispatch, useSelector} from "react-redux";
 import {stateType} from "../../redux/rootStore";
 import {changeCurrentPage, changePageSize, entriesPageType, entryType, getEntries} from "../../redux/entriesReducer";
 import {fileApi} from "../../api/fileApi";
-import {NavLink} from "react-router-dom";
 import {Entry} from "./Entry/Entry";
 import {TableHat} from "./TableHat/TableHat";
 import {Options} from "./Options/Options";
 
 export const TableContainer: React.FC = React.memo(() => {
-    console.log('from TableContainer')
-
     //initial data
     const state = useSelector<stateType, entriesPageType>(state => state.entriesPage)
     const dispatch = useDispatch()
@@ -31,7 +28,6 @@ export const TableContainer: React.FC = React.memo(() => {
         dispatch(changeCurrentPage(newCurrentPage))
     }, [dispatch])
     const totalPages = useMemo(() => {
-        console.log('from useMemo')
         return Math.ceil(state.totalCount / state.pageSize)
     }, [state.totalCount, state.pageSize])
 
@@ -50,7 +46,6 @@ type TablePropsType = {
     changeCurrentPageCallback: (newCurrentPage: number) => void,
 }
 const Table: React.FC<TablePropsType> = React.memo((props) => {
-    console.log('from Table')
     return (
         <div className={styles.wrapper}>
             <div className={styles.optionsWrapper}>

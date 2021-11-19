@@ -9,7 +9,6 @@ type EntryPropsType = {
 }
 
 export const Entry: React.FC<EntryPropsType> = React.memo((props) => {
-    console.log('from entry')
     const date = new Date(props.entry.created_date)
     const entry = props.entry
     return (
