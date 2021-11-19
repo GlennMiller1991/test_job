@@ -49,7 +49,9 @@ const Table: React.FC<TablePropsType> = React.memo((props) => {
     return (
         <div className={styles.wrapper}>
             <div className={styles.optionsWrapper}>
-                <Options changePageSizeCallback={props.changePageSizeCallback}/>
+                <Options pageSize={props.state.pageSize}
+                         changePageSizeCallback={props.changePageSizeCallback}/>
+                <Filter/>
                 <Pagination currentPage={props.state.currentPage}
                             totalPages={props.totalPages}
                             changeCurrentPage={props.changeCurrentPageCallback}/>
@@ -62,6 +64,22 @@ const Table: React.FC<TablePropsType> = React.memo((props) => {
                     )
                 })
             }
+        </div>
+    )
+})
+
+export const Filter: React.FC = React.memo(() => {
+    return (
+        <div>
+            Статус:
+            <select onChange={() => console.log('test')}>
+                <option value={'all'}>Все статусы</option>
+                <option value={'new'}>new</option>
+                <option value={'completed'}>completed</option>
+                <option value={'assigned_to'}>assigned_to</option>
+                <option value={'started'}>started</option>
+                <option value={'declined'}>declined</option>
+            </select>: not implemented yet
         </div>
     )
 })
