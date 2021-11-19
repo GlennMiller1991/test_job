@@ -10,24 +10,8 @@
     cursor: pointer;
 }
 
-.currentPage input {
-    color: #9a1c1c;
-    background-color: inherit;
-    size: auto;
-    font-family: "Cambria Math", serif;
-    font-size: 1em;
-}
-
 .pages {
-    margin-top: 20px;
-    margin-bottom: 30px;
     display: flex;
     justify-content: center;
     align-items: end;
-}
-
-.pages > * {
-    font-family: "Cambria Math", serif;
-    font-size: 1.1em;
-    color: #9a1c1c;
 }

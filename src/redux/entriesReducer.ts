@@ -5,6 +5,7 @@ import {actionsType} from "./rootStore";
 const TEST = 'TEST'
 const GET_ENTRIES = 'GET-ENTRIES'
 const CHANGE_CURRENT_PAGE = 'CHANGE-CURRENT-PAGE'
+const CHANGE_PAGE_SIZE = 'CHANGE-PAGE-SIZE'
 
 //types
 export type entryType = {
@@ -42,6 +43,7 @@ export type entriesPageType = {
 export type testActionType = ReturnType<typeof test>
 export type getEntriesActionType = ReturnType<typeof getEntries>
 export type changeCurrentPageActionType = ReturnType<typeof changeCurrentPage>
+export type changePageSizeActionType = ReturnType<typeof changePageSize>
 
 //action and thunk creators
 export const test = () => {
@@ -66,7 +68,14 @@ export const changeCurrentPage = (currentPage: number) => {
         }
     } as const
 }
-
+export const changePageSize = (pageSize: number) => {
+    return {
+        type: CHANGE_PAGE_SIZE,
+        payload: {
+            pageSize,
+        }
+    } as const
+}
 const initialData: entriesPageType = {
     entries: [],
     totalCount: data.length,
@@ -81,6 +90,12 @@ export const entriesReducer = (state: entriesPageType = initialData, action: act
             return {
                 ...state,
                 ...action.payload,
+            }
+        case CHANGE_PAGE_SIZE:
+            return {
+                ...state,
+                ...action.payload,
+                currentPage: 1,
             }
         default:
             return state

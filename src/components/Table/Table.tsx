@@ -1,69 +1,71 @@
-import React, {useCallback, useEffect} from "react";
+import React, {ChangeEvent, useCallback, useEffect, useMemo} from "react";
 import styles from './Table.module.css'
 import {Pagination} from "./Pagination/Pagination";
 import {useDispatch, useSelector} from "react-redux";
 import {stateType} from "../../redux/rootStore";
-import {changeCurrentPage, entriesPageType, entryType, getEntries} from "../../redux/entriesReducer";
+import {changeCurrentPage, changePageSize, entriesPageType, entryType, getEntries} from "../../redux/entriesReducer";
 import {fileApi} from "../../api/fileApi";
+import {NavLink} from "react-router-dom";
+import {Entry} from "./Entry/Entry";
+import {TableHat} from "./TableHat/TableHat";
+import {Options} from "./Options/Options";
 
-export const Table: React.FC = React.memo(() => {
-    console.log('from Table')
-    const pages = (totalCount: number, pageSize: number) => {
-        return Math.ceil(totalCount / pageSize)
-    }
+export const TableContainer: React.FC = React.memo(() => {
+    console.log('from TableContainer')
+
+    //initial data
     const state = useSelector<stateType, entriesPageType>(state => state.entriesPage)
     const dispatch = useDispatch()
-    const changeCurrentPageCallback = useCallback((newCurrentPage: number) => {
-        dispatch(changeCurrentPage(newCurrentPage))
-    }, [dispatch])
+
+    //side-effects
     useEffect(() => {
         const entries: entryType[] = fileApi.getEntries(state.pageSize, state.currentPage)
         dispatch(getEntries(entries))
-    }, [state.currentPage, state.pageSize, state.entries, dispatch])
+    }, [state.currentPage, state.pageSize, dispatch])
+
+    //callbacks
+    const changePageSizeCallback = useCallback((e: ChangeEvent<HTMLSelectElement>) => {
+        dispatch(changePageSize(Number(e.currentTarget.value)))
+    }, [dispatch])
+    const changeCurrentPageCallback = useCallback((newCurrentPage: number) => {
+        dispatch(changeCurrentPage(newCurrentPage))
+    }, [dispatch])
+    const totalPages = useMemo(() => {
+        console.log('from useMemo')
+        return Math.ceil(state.totalCount / state.pageSize)
+    }, [state.totalCount, state.pageSize])
 
     return (
+        <Table state={state}
+               totalPages={totalPages}
+               changePageSizeCallback={changePageSizeCallback}
+               changeCurrentPageCallback={changeCurrentPageCallback}/>
+    )
+})
+
+type TablePropsType = {
+    state: entriesPageType,
+    totalPages: number,
+    changePageSizeCallback: (e: ChangeEvent<HTMLSelectElement>) => void,
+    changeCurrentPageCallback: (newCurrentPage: number) => void,
+}
+const Table: React.FC<TablePropsType> = React.memo((props) => {
+    console.log('from Table')
+    return (
         <div className={styles.wrapper}>
-            <Pagination currentPage={state.currentPage}
-                        totalPages={pages(state.totalCount, state.pageSize)}
-                        changeCurrentPage={changeCurrentPageCallback}/>
-            <div className={`${styles.hat}`}>
-                <div>Номер/дата</div>
-                <div>Тип задания/автор</div>
-                <div>Аккаунт/Терминал</div>
-                <div>Статус</div>
+            <div className={styles.optionsWrapper}>
+                <Options changePageSizeCallback={props.changePageSizeCallback}/>
+                <Pagination currentPage={props.state.currentPage}
+                            totalPages={props.totalPages}
+                            changeCurrentPage={props.changeCurrentPageCallback}/>
             </div>
+            <TableHat/>
             {
-                state.entries &&
-                state.entries.map(entry => {
-                    const date = new Date(entry.created_date)
+                props.state.entries.map((entry, order) => {
                     return (
-                        <div key={entry.oguid}
-                             className={`${styles.row}`}>
-                            <div>
-                                <div>№{entry.id}</div>
-                                <div>
-                                    {`${date.getDate()}.${date.getMonth()}.${date.getFullYear()} ${date.getHours()}:${date.getMinutes()}`}
-                                </div>
-                            </div>
-                            <div>
-                                <div>
-                                    {entry.order_type.name}
-                                </div>
-                                <div>
-                                    {`${entry.created_user.surname} ${entry.created_user.name[0]}.${entry.created_user.patronymic[0]}.`}
-                                </div>
-                            </div>
-                            <div>
-                                <div>{entry.account.name}</div>
-                                <div>{entry.terminal.name}</div>
-                            </div>
-                            <div>
-                                <div>{entry.status}</div>
-                            </div>
-                        </div>
+                        <Entry entry={entry} order={order} key={order}/>
                     )
                 })
-
             }
         </div>
     )
