@@ -1,9 +1,19 @@
 import data from './initialData.json'
 import {emptyEntry} from "../redux/entryReducer";
+import {entryType} from "../redux/entriesReducer";
 
 export const fileApi = {
-    getEntries(pageSize: number, currentPage: number, filter: string) {
-        const entryArray = filter === 'all' ? data : data.filter(entry => entry.status === filter)
+    getEntries(pageSize: number, currentPage: number, filter: string, filterDate: string) {
+        //filter
+        let entryArray = filter === 'all' ? data : data.filter(entry => entry.status === filter)
+
+        //sort
+        if (filterDate === 'direct') {
+            entryArray.sort(directSort)
+        } else {
+            entryArray.sort(reverseSort)
+        }
+
         return {entries: entryArray.slice((currentPage - 1) * pageSize, currentPage * pageSize), totalCount: entryArray.length}
     },
     setEntry(entryId: number) {
@@ -12,4 +22,12 @@ export const fileApi = {
             entry ? entry : emptyEntry
         )
     }
+}
+
+//tools
+const directSort = (first: entryType, second: entryType) => {
+    return first.created_date > second.created_date ? -1 : 1
+}
+const reverseSort = (first: entryType, second: entryType) => {
+    return first.created_date > second.created_date ? 1 : -1
 }

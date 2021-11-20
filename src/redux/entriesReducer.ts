@@ -7,6 +7,7 @@ const GET_ENTRIES = 'GET-ENTRIES'
 const CHANGE_CURRENT_PAGE = 'CHANGE-CURRENT-PAGE'
 const CHANGE_PAGE_SIZE = 'CHANGE-PAGE-SIZE'
 const CHANGE_FILTER = 'CHANGE-FILTER'
+const CHANGE_SORT_DATE_VALUE = 'CHANGE-SORT-DATE-VALUE'
 
 //types
 export type filterType = 'all' | 'new' | 'completed' | 'assigned_to' | 'started' | 'declined'
@@ -39,7 +40,8 @@ export type entriesPageType = {
     totalCount: number,
     pageSize: number,
     currentPage: number,
-    filter: string //filterType,
+    filter: string, //filterType,
+    sortDate: string,
 }
 
 //action types
@@ -48,6 +50,7 @@ export type getEntriesActionType = ReturnType<typeof getEntries>
 export type changeCurrentPageActionType = ReturnType<typeof changeCurrentPage>
 export type changePageSizeActionType = ReturnType<typeof changePageSize>
 export type changeFilterActionType = ReturnType<typeof changeFilterValue>
+export type changeSortDateValueActionType = ReturnType<typeof changeSortDateValue>
 
 //action and thunk creators
 export const test = () => {
@@ -85,7 +88,15 @@ export const changeFilterValue = (filter: string /*filterType*/) => {
     return {
         type: CHANGE_FILTER,
         payload: {
-            filter
+            filter,
+        }
+    } as const
+}
+export const changeSortDateValue = (sortDate: string) => {
+    return {
+        type: CHANGE_SORT_DATE_VALUE,
+        payload: {
+            sortDate,
         }
     } as const
 }
@@ -96,6 +107,7 @@ const initialData: entriesPageType = {
     pageSize: 3,
     currentPage: 1,
     filter: 'all',
+    sortDate: 'direct',
 }
 
 export const entriesReducer = (state: entriesPageType = initialData, action: actionsType) => {
@@ -108,6 +120,7 @@ export const entriesReducer = (state: entriesPageType = initialData, action: act
             }
         case CHANGE_FILTER:
         case CHANGE_PAGE_SIZE:
+        case CHANGE_SORT_DATE_VALUE:
             return {
                 ...state,
                 ...action.payload,

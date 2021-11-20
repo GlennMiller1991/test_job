@@ -1,0 +1,17 @@
+.filterWrapper {}
+
+.filterStatusWrapper, .sortDateWrapper {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+}
+
+.select {
+    align-self: center;
+    justify-self: end;
+    border: none;
+}
+
+.name {
+    align-self: center;
+    justify-self: start;
+}

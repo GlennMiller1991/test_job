@@ -4,8 +4,9 @@ import {Pagination} from "./Pagination/Pagination";
 import {useDispatch, useSelector} from "react-redux";
 import {stateType} from "../../redux/rootStore";
 import {
-    changeCurrentPage, changeFilterValue,
-    changePageSize,
+    changeCurrentPage,
+    changeFilterValue,
+    changePageSize, changeSortDateValue,
     entriesPageType,
     getEntries
 } from "../../redux/entriesReducer";
@@ -13,6 +14,7 @@ import {fileApi} from "../../api/fileApi";
 import {Entry} from "./Entry/Entry";
 import {TableHat} from "./TableHat/TableHat";
 import {Options} from "./Options/Options";
+import {Filter} from "./Filter/Filter";
 
 export const TableContainer: React.FC = React.memo(() => {
     //initial data
@@ -21,9 +23,9 @@ export const TableContainer: React.FC = React.memo(() => {
 
     //side-effects
     useEffect(() => {
-        const {entries, totalCount} = fileApi.getEntries(state.pageSize, state.currentPage, state.filter)
+        const {entries, totalCount} = fileApi.getEntries(state.pageSize, state.currentPage, state.filter, state.sortDate)
         dispatch(getEntries(entries, totalCount))
-    }, [state.currentPage, state.pageSize, dispatch, state.filter])
+    }, [state.currentPage, state.pageSize, dispatch, state.filter, state.sortDate])
 
     //callbacks
     const changePageSizeCallback = useCallback((e: ChangeEvent<HTMLSelectElement>) => {
@@ -38,12 +40,17 @@ export const TableContainer: React.FC = React.memo(() => {
     const changeFilterCallback = useCallback((e: ChangeEvent<HTMLSelectElement>) => {
         dispatch(changeFilterValue(e.currentTarget.value))
     }, [dispatch])
+    const changeSortDateCallback = useCallback((e: ChangeEvent<HTMLSelectElement>) => {
+        dispatch(changeSortDateValue(e.currentTarget.value))
+    }, [dispatch])
+
     return (
         <Table state={state}
                totalPages={totalPages}
                changePageSizeCallback={changePageSizeCallback}
                changeCurrentPageCallback={changeCurrentPageCallback}
-               changeFilterCallback={changeFilterCallback}/>
+               changeFilterCallback={changeFilterCallback}
+               changeSortDateCallback={changeSortDateCallback}/>
     )
 })
 
@@ -53,14 +60,18 @@ type TablePropsType = {
     changePageSizeCallback: (e: ChangeEvent<HTMLSelectElement>) => void,
     changeCurrentPageCallback: (newCurrentPage: number) => void,
     changeFilterCallback: (e: ChangeEvent<HTMLSelectElement>) => void,
+    changeSortDateCallback: (e: ChangeEvent<HTMLSelectElement>) => void,
 }
 const Table: React.FC<TablePropsType> = React.memo((props) => {
     return (
         <div className={styles.wrapper}>
             <div className={styles.optionsWrapper}>
+                <Filter filter={props.state.filter}
+                        sortDate={props.state.sortDate}
+                        changeFilterCallback={props.changeFilterCallback}
+                        changeSortDateCallback={props.changeSortDateCallback}/>
                 <Options pageSize={props.state.pageSize}
                          changePageSizeCallback={props.changePageSizeCallback}/>
-                <Filter filter={props.state.filter} changeFilterCallback={props.changeFilterCallback}/>
                 <Pagination currentPage={props.state.currentPage}
                             totalPages={props.totalPages}
                             changeCurrentPage={props.changeCurrentPageCallback}/>
@@ -77,22 +88,3 @@ const Table: React.FC<TablePropsType> = React.memo((props) => {
     )
 })
 
-type FilterPropsType = {
-    filter: string, //filterType,
-    changeFilterCallback: (e: ChangeEvent<HTMLSelectElement>) => void,
-}
-export const Filter: React.FC<FilterPropsType> = React.memo((props) => {
-    return (
-        <div>
-            Статус:
-            <select value={props.filter} onChange={props.changeFilterCallback}>
-                <option value={'all'}>Все статусы</option>
-                <option value={'new'}>new</option>
-                <option value={'completed'}>completed</option>
-                <option value={'assigned_to'}>assigned_to</option>
-                <option value={'started'}>started</option>
-                <option value={'declined'}>declined</option>
-            </select>
-        </div>
-    )
-})
