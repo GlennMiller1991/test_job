@@ -6,6 +6,7 @@ import {stateType} from "../../redux/rootStore";
 import {fileApi} from "../../api/fileApi";
 import {EntryInfo} from "./EntryInfo/EntryInfo";
 import {EntryEdit} from "./EntryEdit/EntryEdit";
+import preLoader from '../../common/preloader.gif'
 
 type PathParamsType = {
     entryId: string,
@@ -35,12 +36,12 @@ const EntrySecret: React.FC<RouteComponentProps<PathParamsType>> = React.memo((p
 
     return (
         <React.Fragment>
-            {editMode ?
-                <EntryEdit state={state}
-                           onSaveButtonCallback={onSaveButtonCallback}/> :
-                <EntryInfo state={state}
-                           onEditButtonCallback={onEditButtonCallback}
-                />
+            {
+                state.id !== +props.match.params.entryId ?
+                    <img src={preLoader} alt={'please, wait...'}/> :
+                    editMode ?
+                        <EntryEdit state={state} onSaveButtonCallback={onSaveButtonCallback}/> :
+                        <EntryInfo state={state} onEditButtonCallback={onEditButtonCallback}/>
             }
         </React.Fragment>
     )

@@ -45,6 +45,7 @@ export const EntryEdit: React.FC<EntryEditPropsType> = React.memo((props) => {
 
     return (
         <div>
+            <h1>NOT IMPLEMENTED YET</h1>
             <div className={styles.entry}>
                 №{state.id}
                 <hr/>
