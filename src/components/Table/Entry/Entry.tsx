@@ -34,7 +34,9 @@ export const Entry: React.FC<EntryPropsType> = React.memo((props) => {
                     <div className={styles.bottom}>{entry.terminal.name}</div>
                 </div>
                 <div>
-                    <div>{entry.status}</div>
+                    <div>
+                        {entry.status}
+                    </div>
                 </div>
             </div>
         </NavLink>
