@@ -59,12 +59,13 @@ export const test = () => {
         payload: {}
     } as const
 }
-export const getEntries = (entries: entryType[], totalCount: number) => {
+export const getEntries = (entries: entryType[], totalCount: number, currentPage: number) => {
     return {
         type: GET_ENTRIES,
         payload: {
             entries,
             totalCount,
+            currentPage,
         }
     } as const
 }

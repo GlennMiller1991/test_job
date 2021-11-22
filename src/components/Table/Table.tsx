@@ -17,15 +17,10 @@ import {Options} from "./Options/Options";
 import {Filter} from "./Filter/Filter";
 
 export const TableContainer: React.FC = React.memo(() => {
+    console.log('from table')
     //initial data
     const state = useSelector<stateType, entriesPageType>(state => state.entriesPage)
     const dispatch = useDispatch()
-
-    //side-effects
-    useEffect(() => {
-        const {entries, totalCount} = fileApi.getEntries(state.pageSize, state.currentPage, state.filter, state.sortDate)
-        dispatch(getEntries(entries, totalCount))
-    }, [state.currentPage, state.pageSize, dispatch, state.filter, state.sortDate])
 
     //callbacks
     const changePageSizeCallback = useCallback((e: ChangeEvent<HTMLSelectElement>) => {
@@ -43,6 +38,17 @@ export const TableContainer: React.FC = React.memo(() => {
     const changeSortDateCallback = useCallback((e: ChangeEvent<HTMLSelectElement>) => {
         dispatch(changeSortDateValue(e.currentTarget.value))
     }, [dispatch])
+
+    //side-effects
+    useEffect(() => {
+        const {entries, totalCount} = fileApi.getEntries(state.pageSize, state.currentPage, state.filter, state.sortDate)
+        if (totalCount) {
+            if (entries.length) dispatch(getEntries(entries, totalCount, state.currentPage))
+            else dispatch(getEntries(entries, totalCount, 1))
+        } else {
+            dispatch(getEntries(entries, totalCount, 0))
+        }
+    }, [state.currentPage, state.pageSize, dispatch, state.filter, state.sortDate])
 
     return (
         <Table state={state}

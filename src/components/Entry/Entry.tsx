@@ -7,14 +7,17 @@ import {fileApi} from "../../api/fileApi";
 import {EntryInfo} from "./EntryInfo/EntryInfo";
 import {EntryEdit} from "./EntryEdit/EntryEdit";
 import preLoader from '../../common/preloader.gif'
+import {entriesPageType, entryType, getEntries} from "../../redux/entriesReducer";
 
 type PathParamsType = {
     entryId: string,
 }
 
 const EntrySecret: React.FC<RouteComponentProps<PathParamsType>> = React.memo((props) => {
+    console.log('from Entry')
     //initial data
     const state = useSelector<stateType, entryPageStateType>(state => state.entryPage)
+    const entriesState = useSelector<stateType, entriesPageType>(state => state.entriesPage)
     const dispatch = useDispatch()
 
     //is edit mode?
@@ -24,9 +27,17 @@ const EntrySecret: React.FC<RouteComponentProps<PathParamsType>> = React.memo((p
     const onEditButtonCallback = useCallback(() => {
         setEditMode(true)
     }, [])
-    const onSaveButtonCallback = useCallback(() => {
+    const onSaveButtonCallback = useCallback((entry: entryType) => {
+        fileApi.renewData(entry)
         setEditMode(false)
-    }, [])
+        dispatch(setEntry(fileApi.setEntry(state.id)))
+        const {entries, totalCount} = fileApi.getEntries(
+            entriesState.pageSize,
+            entriesState.currentPage,
+            entriesState.filter,
+            entriesState.sortDate)
+        dispatch(getEntries(entries, totalCount, 1))
+    }, [state.id, dispatch])
 
     //side-effects
     useEffect(() => {

@@ -7,6 +7,7 @@ type EntryInfoPropsType = {
     onEditButtonCallback: () => void
 }
 export const EntryInfo: React.FC<EntryInfoPropsType> = React.memo((props) => {
+    console.log('from entryInfo')
     const state = props.state
     return (
         <div>

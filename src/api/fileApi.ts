@@ -1,6 +1,8 @@
-import data from './initialData.json'
+import datas from './initialData.json'
 import {emptyEntry} from "../redux/entryReducer";
 import {entryType} from "../redux/entriesReducer";
+
+let data = datas
 
 export const fileApi = {
     getEntries(pageSize: number, currentPage: number, filter: string, filterDate: string) {
@@ -21,6 +23,9 @@ export const fileApi = {
         return (
             entry ? entry : emptyEntry
         )
+    },
+    renewData(newEntry: entryType) {
+        data = data.map(entry => entry.id === newEntry.id ? newEntry : entry)
     }
 }
 
