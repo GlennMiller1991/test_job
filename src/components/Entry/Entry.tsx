@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useState} from "react";
+import React, {useCallback, useEffect} from "react";
 import {RouteComponentProps, withRouter} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {entryPageStateType, setEntry} from "../../redux/entryReducer";
@@ -6,7 +6,7 @@ import {stateType} from "../../redux/rootStore";
 import {fileApi} from "../../api/fileApi";
 import {EntryInfo} from "./EntryInfo/EntryInfo";
 import preLoader from '../../common/preloader.gif'
-import {entriesPageType, entryType, getEntries} from "../../redux/entriesReducer";
+import {entriesPageType, getEntries} from "../../redux/entriesReducer";
 
 type PathParamsType = {
     entryId: string,
@@ -19,8 +19,8 @@ const EntrySecret: React.FC<RouteComponentProps<PathParamsType>> = React.memo((p
     const entriesState = useSelector<stateType, entriesPageType>(state => state.entriesPage)
     const dispatch = useDispatch()
 
-    const onSaveButtonCallback = useCallback((entry: entryType) => {
-        fileApi.renewData(entry)
+    const onSaveButtonCallback = useCallback((obj: Object, entryId: number) => {
+        fileApi.renewData(obj, entryId)
         dispatch(setEntry(fileApi.setEntry(state.id)))
         const {entries, totalCount} = fileApi.getEntries(
             entriesState.pageSize,

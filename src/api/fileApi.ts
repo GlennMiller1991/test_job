@@ -31,8 +31,8 @@ export const fileApi = {
             entry ? entry : emptyEntry
         )
     },
-    renewData(newEntry: entryType) {
-        data = data.map(entry => entry.id === newEntry.id ? newEntry : entry)
+    renewData(obj: Object, entryId: number) {
+        data = data.map(entry => entry.id === entryId ? {...entry, ...obj} : entry)
     },
     getAuthors() {
         return data.map(entry => entry.created_user).filter((s, i, self) => self.indexOf(s) === i)

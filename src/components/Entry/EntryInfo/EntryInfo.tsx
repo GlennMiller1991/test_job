@@ -1,12 +1,11 @@
 import {entryPageStateType} from "../../../redux/entryReducer";
 import React, {useCallback, useMemo, useState} from "react";
 import styles from "../Entry.module.css";
-import {entryType} from "../../../redux/entriesReducer";
 import {fileApi} from "../../../api/fileApi";
 
 type EntryInfoPropsType = {
     state: entryPageStateType,
-    onSaveButtonCallback: (entry: entryType) => void,
+    onSaveButtonCallback: (obj: Object, entryId: number) => void,
 }
 export const EntryInfo: React.FC<EntryInfoPropsType> = React.memo((props) => {
     console.log('from entryInfo')
@@ -18,12 +17,9 @@ export const EntryInfo: React.FC<EntryInfoPropsType> = React.memo((props) => {
     }, [])
 
     const onBlurCallback = useCallback((obj: Object, changeEditModeFunct: (value: boolean) => void) => {
-        props.onSaveButtonCallback({
-            ...props.state,
-            ...obj,
-        })
+        props.onSaveButtonCallback(obj, props.state.id)
         changeEditModeFunct(false)
-    }, [props.onSaveButtonCallback, props.state])
+    }, [props.onSaveButtonCallback, props.state.id])
 
     return (
         <div>
