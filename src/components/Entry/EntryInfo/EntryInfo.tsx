@@ -1,7 +1,9 @@
 import {entryPageStateType} from "../../../redux/entryReducer";
-import React, {useCallback, useMemo, useState} from "react";
+import React, {useCallback, useMemo} from "react";
 import styles from "../Entry.module.css";
 import {fileApi} from "../../../api/fileApi";
+import {EditableSelect} from "./EditableSelect/EditableSelect";
+import {UnchangablePart} from "./UnchangedPart/UnchangablePart";
 
 type EntryInfoPropsType = {
     state: entryPageStateType,
@@ -46,53 +48,12 @@ export const EntryInfo: React.FC<EntryInfoPropsType> = React.memo((props) => {
                                     onBlurCallback={onBlurCallback}
                                     propertyName={'status'}/>
                     <hr/>
+                    <span className={styles.description}>Двойной клик по полям<br/>типа заявки,
+                    исполнителя <br/>и статуса позволяет <br/>их редактировать</span>
+                    <hr/>
                 </div>
             </div>
         </div>
     )
 })
 
-type EditableSelectPropsType = {
-    options: string[],
-    startValue: string,
-    onBlurCallback: (obj: Object, changeEditModeFunct: (value: boolean) => void) => void,
-    propertyName: string,
-}
-export const EditableSelect: React.FC<EditableSelectPropsType> = React.memo((props) => {
-    console.log('from EditableSelect')
-    const [value, setValue] = useState(props.startValue)
-    const [editMode, setEditMode] = useState(false)
-    return (
-        <React.Fragment>
-            {
-                editMode ?
-                    <select value={value}
-                            autoFocus
-                            onBlur={() => props.onBlurCallback({[props.propertyName]: value}, setEditMode)}
-                            onChange={(e) => setValue(e.currentTarget.value)}>
-                        {
-                            props.options.map((option, id) => <option key={id} value={option}>{option}</option>)
-                        }
-                    </select>
-                    :
-                    <span onDoubleClick={() => setEditMode(true)}>{value}</span>
-            }
-        </React.Fragment>
-    )
-})
-
-type UnchangablePartPropsType = {
-    id: number,
-    date: string,
-}
-export const UnchangablePart: React.FC<UnchangablePartPropsType> = React.memo((props) => {
-    console.log('from UnchangablePart')
-    return (
-        <React.Fragment>
-            №{props.id}
-            <hr/>
-            {props.date}
-            <hr/>
-        </React.Fragment>
-    )
-})
