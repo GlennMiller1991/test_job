@@ -23,7 +23,7 @@ export const EntryInfo: React.FC<EntryInfoPropsType> = React.memo((props) => {
             ...obj,
         })
         changeEditModeFunct(false)
-    }, [props.onSaveButtonCallback])
+    }, [props.onSaveButtonCallback, props.state])
 
     return (
         <div>
