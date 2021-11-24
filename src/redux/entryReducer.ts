@@ -7,10 +7,7 @@ export const emptyEntry = {
     id: -1,
     oguid: '',
     status: '',
-    order_type: {
-        name: '',
-        oguid: '',
-    },
+    order_type: '',
     terminal: {
         name: '',
         oguid: '',
@@ -19,12 +16,7 @@ export const emptyEntry = {
         name: '',
         oguid: '',
     },
-    created_user: {
-        surname: '',
-        name: '',
-        patronymic: '',
-        oguid: '',
-    },
+    created_user: '',
     created_date: 0,
 }
 //types

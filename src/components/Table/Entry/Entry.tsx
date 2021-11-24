@@ -23,10 +23,10 @@ export const Entry: React.FC<EntryPropsType> = React.memo((props) => {
                 </div>
                 <div>
                     <div>
-                        {entry.order_type.name}
+                        {entry.order_type}
                     </div>
                     <div className={styles.bottom}>
-                        {`${entry.created_user.surname} ${entry.created_user.name[0]}.${entry.created_user.patronymic[0]}.`}
+                        {props.entry.created_user}
                     </div>
                 </div>
                 <div>

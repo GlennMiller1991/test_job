@@ -11,7 +11,7 @@ const CHANGE_SORT_DATE_VALUE = 'CHANGE-SORT-DATE-VALUE'
 
 //types
 export type filterType = 'all' | 'new' | 'completed' | 'assigned_to' | 'started' | 'declined'
-export type entryType = {
+export type notChangedEntryType = {
     id: number,
     oguid: string,
     status: string,
@@ -33,6 +33,22 @@ export type entryType = {
         patronymic: string,
         oguid: string,
     },
+    created_date: number,
+}
+export type entryType = {
+    id: number,
+    oguid: string,
+    status: string,
+    order_type: string,
+    terminal: {
+        name: string,
+        oguid: string,
+    },
+    account: {
+        name: string,
+        oguid: string,
+    },
+    created_user: string,
     created_date: number,
 }
 export type entriesPageType = {

@@ -1,8 +1,15 @@
 import datas from './initialData.json'
 import {emptyEntry} from "../redux/entryReducer";
-import {entryType} from "../redux/entriesReducer";
+import {entryType, notChangedEntryType} from "../redux/entriesReducer";
 
-let data = datas
+let notChangedData: notChangedEntryType[] = datas
+let data: entryType[] = notChangedData.map(entry => {
+    return {
+        ...entry,
+        order_type: entry.order_type.name,
+        created_user: `${entry.created_user.surname} ${entry.created_user.name[0]}.${entry.created_user.patronymic[0]}`
+    }
+})
 
 export const fileApi = {
     getEntries(pageSize: number, currentPage: number, filter: string, filterDate: string) {
@@ -26,6 +33,12 @@ export const fileApi = {
     },
     renewData(newEntry: entryType) {
         data = data.map(entry => entry.id === newEntry.id ? newEntry : entry)
+    },
+    getAuthors() {
+        return data.map(entry => entry.created_user).filter((s, i, self) => self.indexOf(s) === i)
+    },
+    getOrders() {
+        return data.map(entry => entry.order_type).filter((s, i, self) => self.indexOf(s) === i)
     }
 }
 
