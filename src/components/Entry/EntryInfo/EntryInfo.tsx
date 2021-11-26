@@ -48,9 +48,6 @@ export const EntryInfo: React.FC<EntryInfoPropsType> = React.memo((props) => {
                                     onBlurCallback={onBlurCallback}
                                     propertyName={'status'}/>
                     <hr/>
-                    <span className={styles.description}>Двойной клик по полям<br/>типа заявки,
-                    исполнителя <br/>и статуса позволяет <br/>их редактировать</span>
-                    <hr/>
                 </div>
             </div>
         </div>
