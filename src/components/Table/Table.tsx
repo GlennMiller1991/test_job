@@ -41,7 +41,7 @@ export const TableContainer: React.FC = React.memo(() => {
 
     //side-effects
     useEffect(() => {
-        document.title = 'Тестовое задание'
+        document.title = 'Тестовая версия'
 
         const {entries, totalCount} = fileApi.getEntries(state.pageSize, state.currentPage, state.filter, state.sortDate)
         if (totalCount) {
